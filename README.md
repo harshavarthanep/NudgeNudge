@@ -26,6 +26,18 @@ A companion that remembers what you tell it, reminds you on time, keeps remindin
 > **Tip: the `.github` folder.** Mac and Windows hide folders that start with a dot. If it didn't upload, on GitHub choose
 > Add file, Create new file, type the name `.github/workflows/build-apps.yml`, paste the contents of that file, and commit.
 
+## Optional: live Google Calendar sync on the website
+
+File import and export work without this. To let people sign in with Google and pull in their events:
+
+1. Open console.cloud.google.com and create a project called Nudge Nudge.
+2. APIs & Services, Library: enable **Google Calendar API**.
+3. OAuth consent screen: choose External, fill in the app name and your email, add the scope `.../auth/calendar.readonly`, and publish the app (or add testers' emails while testing).
+4. Credentials, Create credentials, OAuth client ID, type **Web application**. Under Authorized JavaScript origins add `https://harshavarthanep.github.io`.
+5. Copy the Client ID. In `app/index.html`, find `window.NN_GOOGLE_CLIENT_ID = window.NN_GOOGLE_CLIENT_ID || '';` near the top and paste it between the quotes. Commit.
+
+Until Google verifies the app, people see an "unverified app" notice and can continue through Advanced. Live sync is for the website; in the desktop and Android apps people use the file import.
+
 ## Releasing an update
 
 1. Replace the files you changed (usually `app/index.html`) and commit.

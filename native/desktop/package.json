@@ -1,0 +1,71 @@
+{
+  "name": "nudgenudge-desktop",
+  "productName": "Nudge Nudge",
+  "version": "1.0.0",
+  "description": "Nudge Nudge: reminders that don't give up, alarms that talk, and a companion that keeps you on track. Built by H24 Creationz.",
+  "author": { "name": "H24 Creationz", "email": "harshavarthanep@gmail.com" },
+  "homepage": "https://github.com/harshavarthanep/NudgeNudge",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "prepare-www": "node ../shared/prepare-www.mjs www",
+    "start": "npm run prepare-www && electron .",
+    "build:win": "npm run prepare-www && electron-builder --win --publish never",
+    "build:mac": "npm run prepare-www && electron-builder --mac --publish never",
+    "build:linux": "npm run prepare-www && electron-builder --linux --publish never"
+  },
+  "devDependencies": {
+    "electron": "37.2.6",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "com.h24creationz.nudgenudge",
+    "productName": "Nudge Nudge",
+    "copyright": "Copyright © H24 Creationz",
+    "files": ["main.js", "preload.js", "www/**/*", "build/icon.png", "build/tray.png", "package.json"],
+    "directories": { "output": "dist", "buildResources": "build" },
+    "asar": true,
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        { "target": "nsis", "arch": ["x64", "arm64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "artifactName": "NudgeNudge-Setup-${arch}.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Nudge Nudge",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": { "artifactName": "NudgeNudge-Portable.${ext}" },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.productivity",
+      "target": [{ "target": "dmg", "arch": ["universal"] }],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "extendInfo": { "NSMicrophoneUsageDescription": "Nudge Nudge listens only while the voice screen is open, to turn what you say into a reminder." }
+    },
+    "dmg": { "artifactName": "NudgeNudge-Mac.${ext}", "title": "Nudge Nudge" },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "maintainer": "H24 Creationz <harshavarthanep@gmail.com>",
+      "synopsis": "Reminders that don't give up",
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb", "arch": ["x64"] }
+      ]
+    },
+    "appImage": { "artifactName": "NudgeNudge-Linux.${ext}" },
+    "deb": { "artifactName": "NudgeNudge-Linux.${ext}" }
+  }
+}

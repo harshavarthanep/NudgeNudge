@@ -161,7 +161,7 @@ footer a{color:var(--t2)}
     <button role="tab" aria-selected="false" data-v="short">30 seconds</button>
     <button role="tab" aria-selected="false" data-v="vertical">Vertical</button>
   </div>
-  <div class="player" id="player"><video id="vid" controls playsinline preload="metadata" poster="media/poster-full.jpg" src="media/nudge-nudge-demo.mp4"></video></div>
+  <div class="player" id="player" style="position:relative"><video id="vid" autoplay muted loop playsinline preload="auto" poster="media/poster-full.jpg" src="media/nudge-nudge-demo.mp4"></video><button id="vctl" class="btn g" style="position:absolute;right:16px;bottom:16px;height:42px;background:rgba(16,18,22,.75);backdrop-filter:blur(8px)" aria-label="Show video controls">Controls</button></div>
   <p class="vlinks">Download the videos: <a href="media/nudge-nudge-demo.mp4" download>full demo</a> · <a href="media/nudge-nudge-30s.mp4" download>30 seconds</a> · <a href="media/nudge-nudge-vertical.mp4" download>vertical for Reels and Shorts</a></p>
 </div></section>
 
@@ -195,11 +195,23 @@ footer a{color:var(--t2)}
   <div class="feat"><div class="shot"><div class="phone"><img src="media/screens/progress.jpg" alt="Progress screen with Focus, Close and Rhythm rings complete and a 7-day streak" loading="lazy" width="390" height="844"></div><div class="phone sm"><img src="media/screens/shutdown.jpg" alt="Shutdown recap listing open items with buttons to move them to tomorrow" loading="lazy" width="390" height="844"></div></div>
     <div><h3>Rings and routines that build the habit</h3><p><span class="dot" style="background:var(--amber)"></span>Focus minutes &nbsp; <span class="dot" style="background:var(--mint)"></span>Tasks closed &nbsp; <span class="dot" style="background:var(--peri)"></span>Routines kept</p><p>A morning brief, midday check-in, shutdown recap and weekly review keep your days tidy. Change the time, the days, or switch any of them off. Goals are yours to set.</p></div></div>
 
-  <div class="feat" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)"><div class="shot"><img src="media/screens/desktop.jpg" alt="The desktop app: sidebar, companion with today’s rings, and today’s tasks with what’s up next" loading="lazy" width="2160" height="1350" style="border-radius:18px;border:1px solid #30343C;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)"></div>
-    <div><h3>Made for your desk too</h3><p>The desktop app has a full layout with a sidebar, stays in the tray so reminders keep ringing, and can start with your computer.</p><p>Open the mini window for a small always-on-top face with your next reminder. Drag it anywhere and resize it to any size.</p></div></div>
+  <div class="feat" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)"><div class="shot"><img src="media/screens/desktop.jpg" alt="The desktop app: sidebar, companion with today’s rings, and today’s tasks with what’s up next" loading="lazy" width="2160" height="1350" style="width:100%;height:auto;border-radius:18px;border:1px solid #30343C;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)"></div>
+    <div><h3>Made for your desk too</h3><p>The desktop app has a full layout with a sidebar, stays in the tray so reminders keep ringing, and can start with your computer.</p><p>Open the mini window for a small always-on-top companion: a live focus countdown, your next tasks with tick boxes, quick add, and “Did you finish it? Another round or a break?” when a block ends. Resize it to any size.</p></div></div>
+
+  <div class="feat flip"><div class="shot"><div class="phone"><img src="media/screens/matrix.jpg" alt="Tasks arranged in the Eisenhower matrix: Do first, Schedule, Delegate, Later" loading="lazy" width="390" height="844"></div></div>
+    <div><h3>Know what matters first</h3><p>Give tasks a priority and they sort themselves into the Eisenhower matrix: do first, schedule, delegate, or later. High-priority tasks get a deadline, and you’re warned a day, 3 hours and 1 hour before.</p><p>Group everything into folders like Work, Home or each client. Folders can repeat, so a morning-routine checklist comes back unticked every day.</p></div></div>
+
+  <div class="feat"><div class="shot"><div class="phone"><img src="media/screens/money.jpg" alt="Money screen with earned, spent, safe to spend today, daily earning goal and monthly totals" loading="lazy" width="390" height="844"></div></div>
+    <div><h3>Money in, money out</h3><p>Log what you earn and spend in seconds, set a daily earning goal, and save towards goals like a new laptop. Nudge works out how much is safe to spend today after bills and savings.</p><p>Add rent, EMIs, subscriptions, or money someone owes you. You’re reminded on the day, every month if it repeats. There’s a full calculator built in.</p></div></div>
+
+  <div class="feat flip"><div class="shot"><div class="phone"><img src="media/screens/calendar.jpg" alt="Month calendar with coloured dots for tasks and bills, and the selected day’s plan" loading="lazy" width="390" height="844"></div></div>
+    <div><h3>Plan it on the calendar</h3><p>See every task, bill and deadline on one calendar and plan any day ahead. Bring in your Google Calendar events and choose which ones should remind you, or export your tasks to Google Calendar.</p></div></div>
+
+  <div class="feat"><div class="shot"><div class="phone"><img src="media/screens/outfits.jpg" alt="Companion settings with a cap, sunglasses and gold chain, a name field and colour choices" loading="lazy" width="390" height="844"></div></div>
+    <div><h3>Your companion, your style</h3><p>Name it, pick its colour and eye shape, and dress it up with caps, crowns, sunglasses, headphones, chains and more. It learns your best hours for focus and finishing tasks, and its encouragement never repeats the same line twice in a row.</p><p>Prefer quiet? Mute its messages with one tap, or set quiet hours so reminders wait until morning.</p></div></div>
 
   <div class="feat flip"><div class="shot"><div class="phone"><img src="media/screens/ask.jpg" alt="Ask screen answering what you are waiting on and when the quote is due" loading="lazy" width="390" height="844"></div></div>
-    <div><h3>Ask about your own day</h3><p>“What’s next?” “What’s overdue?” “What did I finish today?” “How was my week?” Answers come from your saved tasks and history, with a button for the next step.</p><p>Everything stays on your device. Export a backup file whenever you like, or save straight to a folder on your computer.</p></div></div>
+    <div><h3>Just tell it what to do</h3><p>“Remind me to call Arun tomorrow at 4.” “Move the deck to Friday 3pm.” “Make the proposal high priority.” “Mark the report done.” “Spent 250 on lunch.” Nudge creates, changes and completes tasks for you, and answers “What’s next?”, “What’s overdue?” or “How was my week?” from your own data.</p><p>Everything stays on your device. Export a backup file whenever you like, or save straight to a folder on your computer.</p></div></div>
 </div></section>
 
 <section id="download" style="background:#0D0F12"><div class="wrap">
@@ -218,6 +230,8 @@ footer a{color:var(--t2)}
   <details><summary>Does it work offline?</summary><p>Yes. Reminders, alarms, focus, rings, routines and the Ask answers all work without internet once the app is loaded.</p></details>
   <details><summary>Can I change or switch off the routines and messages?</summary><p>Yes. Every routine has its own time, days and on/off switch. You can turn voice, sounds, vibration and sticky notifications on or off, and change your companion’s colour and eyes.</p></details>
   <details><summary>Can I add it as a widget?</summary><p>On Android, add the Nudge Nudge widget from your home screen’s Widgets list. On a computer, open the mini window: a small always-on-top face with your next reminder and today’s rings. Resize it to any size.</p></details>
+  <details><summary>Does it work with Google Calendar?</summary><p>Yes. Import your Google Calendar events and turn off reminders for any you don’t need, or export your tasks to Google Calendar. Live Google sign-in sync works on the website once it’s set up by the site owner; file import and export work everywhere.</p></details>
+  <details><summary>Is it good for freelancers and businesses?</summary><p>Yes. Track clients in folders, money you’re owed and bills to pay, set a daily earning goal, and use the matrix to decide what to do first. Everything stays private on your device.</p></details>
   <details><summary>Can I add things by voice?</summary><p>Yes. Tap the microphone, speak, and watch your words appear. Edit them if needed, then save. Voice typing works in the Android app and in Chrome, Edge and Safari. In the desktop app, use your keyboard’s dictation (Windows key + H, or press Fn twice on a Mac).</p></details>
   <details><summary>Can I choose a male or female voice?</summary><p>Yes. In You, choose Female or Male, pick a specific voice and set the speed. The voices come from your device, so the choice depends on which voices it has installed.</p></details>
   <details><summary>Why is there no App Store version for iPhone?</summary><p>Apple only allows App Store apps on iPhone. Until then, add the web app to your Home Screen from Safari. It opens full-screen and works offline.</p></details>
@@ -259,9 +273,16 @@ const V = { full: ['media/nudge-nudge-demo.mp4', 'media/poster-full.jpg'], short
 document.querySelectorAll('.tabs [role=tab]').forEach((b) => b.addEventListener('click', () => {
   document.querySelectorAll('.tabs [role=tab]').forEach((x) => x.setAttribute('aria-selected', x === b));
   const v = document.getElementById('vid'), k = b.dataset.v; v.pause(); v.poster = V[k][1]; v.src = V[k][0];
-  document.getElementById('player').classList.toggle('vertical', k === 'vertical'); v.load();
+  document.getElementById('player').classList.toggle('vertical', k === 'vertical'); v.load(); v.play().catch(() => {});
 }));
 
+/* ---------- autoplaying demo: plays muted while visible, controls on request ---------- */
+(function () {
+  const v = document.getElementById('vid'), c = document.getElementById('vctl');
+  c.addEventListener('click', () => { v.controls = true; v.muted = false; c.remove(); v.play().catch(() => {}); });
+  if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }), { threshold: .25 }).observe(v);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+})();
 /* ---------- hero companion ---------- */
 const look = document.getElementById('look');
 look.innerHTML = '<div class="face look" aria-hidden="true">' + ['L', 'R'].map((sd) => '<div class="eyew" data-s="' + sd + '"><div class="eyein"><span class="eyeb"><span class="eye"></span></span></div></div>').join('') + '</div>';
