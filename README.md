@@ -38,6 +38,24 @@ File import and export work without this. To let people sign in with Google and 
 
 Until Google verifies the app, people see an "unverified app" notice and can continue through Advanced. Live sync is for the website; in the desktop and Android apps people use the file import.
 
+## Building the apps for every device (step by step)
+
+You never build on your own computer. GitHub builds every app for you, for free, on its own Windows, Mac and Linux machines.
+
+1. Make sure the 4 Android secrets are added (step 4 above). Use the **same** key every time, the one in your saved `NudgeNudge-PRIVATE-android-key` folder. Never make a new one.
+2. Open your repository on GitHub, then the **Actions** tab. If GitHub asks, click "I understand my workflows, go ahead and enable them".
+3. Click **Build NudgeNudge apps** on the left, then **Run workflow** on the right.
+4. Type a version number higher than the last one (first time `1.0.0`, then `1.0.1`, `1.0.2`…) and press the green **Run workflow** button.
+5. Wait 15 to 20 minutes. Five jobs run: windows, mac, linux, android, then release. When all are green, open **Releases** (right side of the repo page). You'll see:
+   - `NudgeNudge-Setup-x64.exe` and `NudgeNudge-Setup-arm64.exe` (Windows installers), `NudgeNudge-Portable.exe`
+   - `NudgeNudge-Mac.dmg` (Apple silicon and Intel)
+   - `NudgeNudge-Linux.AppImage` and `NudgeNudge-Linux.deb`
+   - `NudgeNudge-Android.apk`
+6. The download page updates itself and starts offering these files. Nothing else to change.
+7. iPhone and iPad: there's no file to build. People open the web app in Safari and choose Share, then Add to Home Screen.
+
+If a job turns red, open it, copy the last 30 lines of the red step, and send them to me.
+
 ## Releasing an update
 
 1. Replace the files you changed (usually `app/index.html`) and commit.
