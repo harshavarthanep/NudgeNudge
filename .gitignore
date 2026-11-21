@@ -1,0 +1,5 @@
+node_modules/
+native/desktop/www/
+native/desktop/dist/
+native/mobile/www/
+native/mobile/android/
