@@ -1,29 +1,40 @@
 # Nudge Nudge
 
-A companion that remembers what you tell it, reminds you on time, keeps reminding until it's done, and protects your focus.
+A companion that remembers what you tell it, reminds you on time, keeps reminding until it's done, and protects your focus. Built by H24 Creationz.
 
-## What's in this folder
-
-| Path | What it is |
+| Folder | What it is |
 |---|---|
 | `index.html` | Product and download page, with the demo videos |
-| `app/` | The web app (installable, works offline) |
-| `app/sw.js` | Offline support and notification buttons (Done / Snooze) |
-| `media/` | Demo videos, posters and app screenshots used on the page |
+| `app/` | The web app (installable, works offline). The desktop and Android apps are built from this same app. |
+| `media/` | Demo videos, posters and screenshots used on the page |
+| `native/desktop/` | Windows, Mac and Linux app |
+| `native/mobile/` | Android app, including the home-screen widget |
+| `native/shared/` | Copies the web app into the desktop and Android apps when they're built |
+| `.github/workflows/build-apps.yml` | Builds every app and publishes the downloads |
 
-## Put it live on GitHub Pages
+## First-time setup (about 10 minutes, once)
 
-1. Create a public repository named `Nudge-Nudge`.
-2. Upload everything in this folder (keep the folder structure, including `.nojekyll`).
-3. Settings → Pages → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`.
-4. After a minute it's live at `https://harshavarthanep.github.io/Nudge-Nudge/` and the app at `/Nudge-Nudge/app/`.
+1. Create a **public** repository named `NudgeNudge` on GitHub.
+2. Upload everything in this folder, including the hidden `.github` folder (see the tip below), then Commit changes.
+3. Turn on the website: Settings, Pages, Source "Deploy from a branch", Branch `main`, folder `/ (root)`, Save.
+   The page will be at `https://harshavarthanep.github.io/NudgeNudge/` and the app at `.../NudgeNudge/app/`.
+4. Add the 4 Android signing secrets from the separate PRIVATE zip (never upload that zip):
+   Settings, Secrets and variables, Actions, New repository secret. Follow `GITHUB-SECRETS-READ-ME.txt`.
+5. Build the apps: Actions, "Build NudgeNudge apps", Run workflow, version `1.0.0`, Run workflow.
+   After about 15 to 20 minutes a Release appears with every download, and the download page switches from "Available soon" to real download buttons automatically.
 
-If you use a different repository name, the page and app still work, but the web address shown at the end of the demo videos will be wrong.
+> **Tip: the `.github` folder.** Mac and Windows hide folders that start with a dot. If it didn't upload, on GitHub choose
+> Add file, Create new file, type the name `.github/workflows/build-apps.yml`, paste the contents of that file, and commit.
 
-## When the phone and desktop apps are built
+## Releasing an update
 
-Open `index.html`, find `const RELEASES = {` near the bottom, and paste each download link. Empty links show "Coming soon".
+1. Replace the files you changed (usually `app/index.html`) and commit.
+2. Actions, "Build NudgeNudge apps", Run workflow, with a **higher** version (for example `1.0.1`).
 
-## How reminders work on the web
+## Notes for each platform
 
-The web app checks reminders every few seconds while it's open in a tab or installed window, and sends real system notifications with Done and Snooze buttons. Browsers pause websites in the background (especially on phones), so for alarms that ring with the screen locked, use the native apps.
+- **Windows:** first run may show "Windows protected your PC". Choose More info, then Run anyway. This appears because the app isn't signed with a paid certificate.
+- **Mac:** first open: System Settings, Privacy & Security, Open Anyway. Removing this step needs an Apple Developer account.
+- **Linux:** `.deb` for Ubuntu, Debian and Mint, `.AppImage` for everything else.
+- **Android:** keep the signing key safe. Updates only install over the old version when they're signed with the same key.
+- **iPhone and iPad:** Apple only allows App Store apps, so iPhone users add the web app to their Home Screen from Safari.

@@ -50,13 +50,16 @@ nav.top .btn{height:42px;padding:0 18px;font-size:14.5px}
 .stage{position:relative;background:var(--s1);border-radius:36px;padding:34px 30px 26px;border:1px solid var(--line);--lidc:var(--s1);min-height:380px;display:flex;flex-direction:column;gap:18px}
 .stage .look{display:flex;justify-content:center;transition:transform .25s ease-out}
 .face{display:flex;gap:26px}
-.eyew{position:relative;width:110px;height:126px;overflow:hidden}
-.eyein{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:blink 5s infinite;transform-origin:center}
-.eye{display:block;background:var(--mint);box-shadow:0 0 30px rgba(139,233,198,.42);transition:all .5s cubic-bezier(.2,.8,.2,1)}
-.lid{position:absolute;left:-18px;right:-18px;background:var(--lidc);transition:all .5s cubic-bezier(.2,.8,.2,1)}
-.lid.t{top:0;transform-origin:50% 100%}
-.lid.b{bottom:0;border-radius:50% 50% 0 0/38px 38px 0 0}
+.eyew{position:relative;width:110px;height:126px}
+@property --lt{syntax:'<length>';inherits:false;initial-value:0px}
+@property --lb{syntax:'<length>';inherits:false;initial-value:0px}
+@property --la{syntax:'<angle>';inherits:false;initial-value:0deg}
+.eyein{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:blink 5s infinite;transform-origin:center;filter:drop-shadow(0 0 14px color-mix(in srgb,var(--ec,#8BE9C6) 55%,transparent))}
+.eyeb{display:block;--lb:0px;-webkit-mask-image:radial-gradient(62% 64px at 50% calc(100% + 64px - var(--lb)),transparent 97%,#000 100%);mask-image:radial-gradient(62% 64px at 50% calc(100% + 64px - var(--lb)),transparent 97%,#000 100%);transition:width .45s cubic-bezier(.34,1.4,.5,1),height .45s cubic-bezier(.34,1.4,.5,1),transform .45s cubic-bezier(.34,1.4,.5,1),--lb .42s cubic-bezier(.2,.8,.2,1)}
+.eye{display:block;width:100%;height:100%;background:var(--ec,#8BE9C6);--lt:0px;--la:0deg;-webkit-mask-image:linear-gradient(calc(180deg + var(--la)),transparent var(--lt),#000 calc(var(--lt) + .6px));mask-image:linear-gradient(calc(180deg + var(--la)),transparent var(--lt),#000 calc(var(--lt) + .6px));transition:border-radius .45s,background .3s,--lt .42s cubic-bezier(.2,.8,.2,1),--la .42s cubic-bezier(.2,.8,.2,1)}
 @keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.06)}}
+.look.shake{animation:shake .5s ease-in-out infinite}
+@keyframes shake{0%,100%{transform:translateY(0)}25%{transform:translateY(-6px) rotate(-2deg)}75%{transform:translateY(-2px) rotate(2deg)}}
 .stage .say{font-size:19px;line-height:1.5;min-height:86px;margin:0}
 .stage .say .c{display:inline-block;width:2px;height:20px;background:var(--mint);vertical-align:-3px;margin-left:2px;animation:car .8s steps(1) infinite}
 @keyframes car{50%{opacity:0}}
@@ -107,7 +110,7 @@ h2{font-family:var(--disp);font-weight:600;font-size:clamp(32px,4.2vw,48px);line
 .plat.web{grid-column:1/-1;flex-direction:row;align-items:center;gap:24px;flex-wrap:wrap;background:linear-gradient(0deg,var(--s1),var(--s1));border-color:#355a4d}
 .plat h3{margin:0;font-family:var(--disp);font-size:22px;font-weight:600}
 .plat .req{font-size:14px;color:var(--t3);margin:0 0 12px}
-.plat .btn{align-self:flex-start;height:46px;font-size:15px}
+.plat .btn{align-self:flex-start;height:46px;font-size:15px;gap:8px}
 .plat .how{font-size:14px;color:var(--t3);margin:12px 0 0}
 .plat.web .txt{flex:1;min-width:260px}
 .tag{display:inline-block;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--s2);color:var(--t2);margin-left:8px;vertical-align:3px}
@@ -169,6 +172,7 @@ footer a{color:var(--t2)}
     <li><strong>It speaks first.</strong><span>Overdue work, a meeting in 25 minutes, a reply you’ve waited three days for: it brings these up without being asked.</span></li>
     <li><strong>It answers from your own day.</strong><span>“When is the quote due?” “What am I waiting on?” Answers come from what you saved, on your device.</span></li>
     <li><strong>It protects your focus.</strong><span>During a focus block, reminders wait and thoughts get parked for later. Alarms still ring.</span></li>
+    <li><strong>It has a personality.</strong><span>Its eyes show how your day is going: happy when you finish, concerned when something’s late, and a little cross if you snooze the same task three times.</span></li>
     <li><strong>It shows you progress.</strong><span>Three daily rings for focus, finished tasks and routines turn a busy day into visible wins.</span></li>
   </ul>
 </div></section>
@@ -191,14 +195,18 @@ footer a{color:var(--t2)}
   <div class="feat"><div class="shot"><div class="phone"><img src="media/screens/progress.jpg" alt="Progress screen with Focus, Close and Rhythm rings complete and a 7-day streak" loading="lazy" width="390" height="844"></div><div class="phone sm"><img src="media/screens/shutdown.jpg" alt="Shutdown recap listing open items with buttons to move them to tomorrow" loading="lazy" width="390" height="844"></div></div>
     <div><h3>Rings and routines that build the habit</h3><p><span class="dot" style="background:var(--amber)"></span>Focus minutes &nbsp; <span class="dot" style="background:var(--mint)"></span>Tasks closed &nbsp; <span class="dot" style="background:var(--peri)"></span>Routines kept</p><p>A morning brief, midday check-in, shutdown recap and weekly review keep your days tidy. Change the time, the days, or switch any of them off. Goals are yours to set.</p></div></div>
 
+  <div class="feat" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)"><div class="shot"><img src="media/screens/desktop.jpg" alt="The desktop app: sidebar, companion with today’s rings, and today’s tasks with what’s up next" loading="lazy" width="2160" height="1350" style="border-radius:18px;border:1px solid #30343C;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)"></div>
+    <div><h3>Made for your desk too</h3><p>The desktop app has a full layout with a sidebar, stays in the tray so reminders keep ringing, and can start with your computer.</p><p>Open the mini window for a small always-on-top face with your next reminder. Drag it anywhere and resize it to any size.</p></div></div>
+
   <div class="feat flip"><div class="shot"><div class="phone"><img src="media/screens/ask.jpg" alt="Ask screen answering what you are waiting on and when the quote is due" loading="lazy" width="390" height="844"></div></div>
     <div><h3>Ask about your own day</h3><p>“What’s next?” “What’s overdue?” “What did I finish today?” “How was my week?” Answers come from your saved tasks and history, with a button for the next step.</p><p>Everything stays on your device. Export a backup file whenever you like, or save straight to a folder on your computer.</p></div></div>
 </div></section>
 
 <section id="download" style="background:#0D0F12"><div class="wrap">
   <h2>Get Nudge Nudge</h2>
-  <p class="intro">Use the phone or desktop app for alarms that ring even when your screen is locked. The web app works anywhere, right now.</p>
+  <p class="intro">The phone and desktop apps ring alarms even when the app is closed or the screen is locked. The web app works anywhere, right now. <span id="rel-ver"></span></p>
   <div class="dl" id="dl"></div>
+  <p class="vlinks">All downloads are also listed on <a href="https://github.com/harshavarthanep/NudgeNudge/releases/latest">the releases page</a>.</p>
 </div></section>
 
 <section id="faq"><div class="wrap faq">
@@ -209,35 +217,42 @@ footer a{color:var(--t2)}
   <details><summary>Does it listen all the time?</summary><p>No. It only listens while you hold the microphone button. Voice typing uses your device’s speech service; some browsers need an internet connection for it.</p></details>
   <details><summary>Does it work offline?</summary><p>Yes. Reminders, alarms, focus, rings, routines and the Ask answers all work without internet once the app is loaded.</p></details>
   <details><summary>Can I change or switch off the routines and messages?</summary><p>Yes. Every routine has its own time, days and on/off switch. You can turn voice, sounds, vibration and sticky notifications on or off, and change your companion’s colour and eyes.</p></details>
-  <details><summary>Can I add it as a widget?</summary><p>On a computer, open the mini window from the app: a small always-visible face with your next reminder and today’s rings. Home-screen widgets come with the phone apps.</p></details>
+  <details><summary>Can I add it as a widget?</summary><p>On Android, add the Nudge Nudge widget from your home screen’s Widgets list. On a computer, open the mini window: a small always-on-top face with your next reminder and today’s rings. Resize it to any size.</p></details>
+  <details><summary>Can I add things by voice?</summary><p>Yes. Tap the microphone, speak, and watch your words appear. Edit them if needed, then save. Voice typing works in the Android app and in Chrome, Edge and Safari. In the desktop app, use your keyboard’s dictation (Windows key + H, or press Fn twice on a Mac).</p></details>
+  <details><summary>Can I choose a male or female voice?</summary><p>Yes. In You, choose Female or Male, pick a specific voice and set the speed. The voices come from your device, so the choice depends on which voices it has installed.</p></details>
+  <details><summary>Why is there no App Store version for iPhone?</summary><p>Apple only allows App Store apps on iPhone. Until then, add the web app to your Home Screen from Safari. It opens full-screen and works offline.</p></details>
 </div></section>
 
 <footer><div class="wrap"><span>Nudge Nudge · made by H24 Creationz</span><span><a href="app/">Web app</a> · <a href="#download">Download</a> · <a href="#faq">Questions</a></span></div></footer>
 
 <script>
-/* ---------- Download links: paste your release file links here when the apps are built ---------- */
-const RELEASES = {
-  android: '',   // e.g. 'https://github.com/USER/REPO/releases/latest/download/Nudge-Nudge.apk'
-  ios: '',       // App Store or TestFlight link
-  windows: '',   // .exe or .msi link
-  mac: '',       // .dmg link
-  linux: ''      // .AppImage or .deb link
-};
+/* ---------- Downloads: always the newest release on GitHub ---------- */
+const REPO = 'harshavarthanep/NudgeNudge';
+const DL = (f) => 'https://github.com/' + REPO + '/releases/latest/download/' + f;
 const PLAT = [
-  ['android', 'Android', 'Android 8 or later', 'Open the downloaded file and allow installs from your browser when asked.'],
-  ['ios', 'iPhone and iPad', 'iOS 16.4 or later', 'Install from the link, or add the web app to your Home Screen from Safari’s Share menu today.'],
-  ['windows', 'Windows', 'Windows 10 or later, 64-bit', 'Run the installer. Windows may ask you to confirm the first time.'],
-  ['mac', 'Mac', 'macOS 11 or later, Apple silicon and Intel', 'Open the file and drag Nudge Nudge to Applications.'],
-  ['linux', 'Linux', '64-bit, most distributions', 'Make the AppImage executable, then open it.']
+  { k: 'windows', name: 'Windows', req: 'Windows 10 or later', files: [['Download for Windows', 'NudgeNudge-Setup-x64.exe', 'Intel and AMD'], ['Windows on ARM', 'NudgeNudge-Setup-arm64.exe', ''], ['Portable, no install', 'NudgeNudge-Portable.exe', '']], how: 'First run: if Windows shows “Windows protected your PC”, choose More info, then Run anyway. Nudge Nudge stays in the tray so reminders keep ringing.' },
+  { k: 'mac', name: 'Mac', req: 'macOS 11 or later · Apple silicon and Intel', files: [['Download for Mac', 'NudgeNudge-Mac.dmg', '']], how: 'Open the file and drag Nudge Nudge to Applications. First open: System Settings, Privacy & Security, then Open Anyway.' },
+  { k: 'linux', name: 'Linux', req: '64-bit · Ubuntu 20.04, Debian 11 or later', files: [['Download AppImage', 'NudgeNudge-Linux.AppImage', ''], ['Download .deb', 'NudgeNudge-Linux.deb', 'Ubuntu, Debian, Mint']], how: 'AppImage: make it executable, then open it. .deb: open it with your software installer.' },
+  { k: 'android', name: 'Android', req: 'Android 6 or later', files: [['Download for Android', 'NudgeNudge-Android.apk', '']], how: 'Open the file and allow installing from your browser when asked. Then allow notifications and exact alarms so alarms ring on time. Add the widget from your home screen’s Widgets list.' },
+  { k: 'ios', name: 'iPhone and iPad', req: 'iOS 16.4 or later', web: true, how: 'Open the web app in Safari, tap Share, then Add to Home Screen. It opens full-screen, works offline and sends notifications while it’s open.' }
 ];
 const ua = navigator.userAgent;
-const mine = /Android/i.test(ua) ? 'android' : /iPhone|iPad|iPod/i.test(ua) ? 'ios' : /Win/i.test(ua) ? 'windows' : /Mac/i.test(ua) ? 'mac' : /Linux/i.test(ua) ? 'linux' : '';
-const dl = document.getElementById('dl');
-dl.innerHTML = '<div class="plat web"><div class="txt"><h3>Web app<span class="tag">Works now</span></h3><p class="req">Chrome, Edge, Safari or Firefox · any device</p><p class="how" style="margin:0">Install it from your browser’s menu to give it its own window. On iPhone: Share, then Add to Home Screen.</p></div><a class="btn p" href="app/">Open the web app</a></div>' +
-  PLAT.sort((a, b) => (b[0] === mine) - (a[0] === mine)).map(([k, name, req, how]) => {
-    const url = RELEASES[k];
-    return '<div class="plat"><h3>' + name + (k === mine ? '<span class="tag">Your device</span>' : '') + '</h3><p class="req">' + req + '</p>' + (url ? '<a class="btn p" href="' + url + '">Download for ' + name + '</a><p class="how">' + how + '</p>' : '<span class="btn g" aria-disabled="true">Coming soon</span><p class="how">Use the web app until then. Your data can move over with a backup file.</p>') + '</div>';
-  }).join('');
+const mine = /Android/i.test(ua) ? 'android' : /iPhone|iPad|iPod/i.test(ua) || (/Mac/i.test(ua) && navigator.maxTouchPoints > 1) ? 'ios' : /Win/i.test(ua) ? 'windows' : /Mac/i.test(ua) ? 'mac' : /Linux/i.test(ua) ? 'linux' : '';
+function drawDownloads(ready, version) {
+  const order = PLAT.slice().sort((a, b) => (b.k === mine) - (a.k === mine));
+  document.getElementById('dl').innerHTML = '<div class="plat web"><div class="txt"><h3>Web app<span class="tag">Works now</span></h3><p class="req">Chrome, Edge, Safari or Firefox · any device</p><p class="how" style="margin:0">Install it from your browser’s menu to give it its own window. Your data stays in your browser on this device.</p></div><a class="btn p" href="app/">Open the web app</a></div>' +
+    order.map((p) => '<div class="plat"><h3>' + p.name + (p.k === mine ? '<span class="tag">Your device</span>' : '') + '</h3><p class="req">' + p.req + '</p>' +
+      (p.web ? '<a class="btn p" href="app/">Open the web app</a>' :
+        ready ? p.files.map(([label, f, note], i) => '<a class="btn ' + (i ? 'g' : 'p') + '" href="' + DL(f) + '" style="margin-top:' + (i ? 8 : 0) + 'px">' + label + (note ? '<span style="font-weight:400;opacity:.75;font-size:13px">' + note + '</span>' : '') + '</a>').join('') :
+        '<span class="btn g" aria-disabled="true">Available soon</span>') +
+      '<p class="how">' + (ready || p.web ? p.how : 'Use the web app until then. Your data moves over with a backup file.') + '</p></div>').join('');
+  document.getElementById('rel-ver').textContent = ready && version ? 'Latest version: ' + version.replace(/^v/, '') + '.' : '';
+}
+drawDownloads(true, '');
+fetch('https://api.github.com/repos/' + REPO + '/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+  .then((r) => (r.status === 404 ? { none: true } : r.ok ? r.json() : null))
+  .then((j) => { if (!j) return; if (j.none) drawDownloads(false, ''); else drawDownloads(!!(j.assets && j.assets.length), j.tag_name); })
+  .catch(() => { /* offline or rate-limited: keep the download buttons */ });
 
 /* ---------- video tabs ---------- */
 const V = { full: ['media/nudge-nudge-demo.mp4', 'media/poster-full.jpg'], short: ['media/nudge-nudge-30s.mp4', 'media/poster-30s.jpg'], vertical: ['media/nudge-nudge-vertical.mp4', 'media/poster-vertical.jpg'] };
@@ -249,29 +264,37 @@ document.querySelectorAll('.tabs [role=tab]').forEach((b) => b.addEventListener(
 
 /* ---------- hero companion ---------- */
 const look = document.getElementById('look');
-look.innerHTML = '<div class="face" aria-hidden="true">' + ['L', 'R'].map((s) => '<div class="eyew" data-s="' + s + '"><div class="eyein"><span class="eye"></span></div><div class="lid t"></div><div class="lid b"></div></div>').join('') + '</div>';
+look.innerHTML = '<div class="face look" aria-hidden="true">' + ['L', 'R'].map((sd) => '<div class="eyew" data-s="' + sd + '"><div class="eyein"><span class="eyeb"><span class="eye"></span></span></div></div>').join('') + '</div>';
+const COL = { angry: '#FF8A80', sad: '#9DB4FF' };
 function expr(e) {
-  const small = innerWidth <= 520, k = small ? .8 : 1, bw = 70 * k, bh = 92 * k, H = small ? 100 : 126;
+  const small = innerWidth <= 520, k = small ? .8 : 1, bw = 74 * k, bh = 98 * k;
+  look.firstChild.classList.toggle('shake', e === 'laugh');
+  look.style.setProperty('--ec', COL[e] || '#8BE9C6');
   document.querySelectorAll('.eyew').forEach((w) => {
-    const sg = w.dataset.s === 'L' ? 1 : -1; const p = { w: bw, h: bh, r: 27 * k, x: 0, y: 0, cT: 0, aT: 0, cB: 0 };
-    if (e === 'happy') Object.assign(p, { cB: bh * .56, y: -4 });
-    if (e === 'proud') Object.assign(p, { cB: bh * .48, y: -8 });
-    if (e === 'thinking') { Object.assign(p, { w: bw * .86, h: bh * .8, x: -14, y: -14 }); if (sg < 0) Object.assign(p, { cT: 10, aT: 8 }); }
-    if (e === 'curious') Object.assign(p, sg > 0 ? { h: bh * 1.08, x: 10 } : { h: bh * .74, x: 10, cT: 8, aT: -10 });
-    if (e === 'worried') Object.assign(p, { cT: bh * .2, aT: -9 * sg, y: 4 });
-    if (e === 'sleepy') Object.assign(p, { cT: bh * .62, y: 6 });
-    const top = H / 2 - p.h / 2 + p.y, bot = H / 2 - p.h / 2 - p.y, eye = w.querySelector('.eye');
-    eye.style.width = p.w + 'px'; eye.style.height = p.h + 'px'; eye.style.borderRadius = p.r + 'px'; eye.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
-    const lt = w.querySelector('.lid.t'); lt.style.height = (p.cT ? top + p.cT : 0) + 'px'; lt.style.transform = 'rotate(' + p.aT + 'deg)';
-    w.querySelector('.lid.b').style.height = (p.cB ? bot + p.cB : 0) + 'px';
+    const sg = w.dataset.s === 'L' ? 1 : -1; const p = { w: bw, h: bh, r: 29 * k, x: 0, y: 0, cT: 0, aT: 0, cB: 0 };
+    const A = (o) => Object.assign(p, o);
+    if (e === 'happy') A({ cB: bh * .56, y: -4 });
+    if (e === 'laugh') A({ cB: bh * .64, y: -8 });
+    if (e === 'excited') A({ w: bw * 1.1, h: bh * 1.08, cB: bh * .4 });
+    if (e === 'proud') A({ cB: bh * .48, y: -8 });
+    if (e === 'thinking') { A({ w: bw * .86, h: bh * .8, x: -14, y: -14 }); if (sg < 0) A({ cT: 10, aT: 8 }); }
+    if (e === 'curious') A(sg > 0 ? { h: bh * 1.08, x: 10 } : { h: bh * .74, x: 10, cT: 8, aT: -10 });
+    if (e === 'worried') A({ cT: bh * .2, aT: -9 * sg, y: 4 });
+    if (e === 'angry') A({ h: bh * .9, cT: bh * .42, aT: 20 * sg, y: 2 });
+    if (e === 'sleepy') A({ cT: bh * .62, y: 6 });
+    const eb = w.querySelector('.eyeb'), ey = w.querySelector('.eye');
+    eb.style.width = p.w + 'px'; eb.style.height = p.h + 'px'; eb.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)'; ey.style.borderRadius = p.r + 'px';
+    const a = Math.abs(p.aT) * Math.PI / 180, L = p.w * Math.sin(a) + p.h * Math.cos(a);
+    ey.style.setProperty('--lt', (p.cT ? p.cT + (L - p.h) / 2 : 0) + 'px'); ey.style.setProperty('--la', p.aT + 'deg'); eb.style.setProperty('--lb', p.cB + 'px');
   });
 }
 const LINES = [
-  ['happy', '11:05 AM', 'Good morning, Maya. Three things today. Your one thing: finish the client proposal.', ['Start 25 min']],
+  ['excited', '8:30 AM', 'Good morning, Maya. Three things today. Your one thing: finish the client proposal.', ['Start 25 min']],
   ['thinking', '11:05 AM', 'Stand-up starts in 25 minutes. I’ll remind you at 11:30, and hold anything you capture until it’s over.', ['Focus until then']],
   ['worried', '3:20 PM', '“Send revised quote” was due at 3 PM. Finish it now, or pick a new time?', ['Mark done', 'Snooze 1 hour']],
+  ['angry', '4:45 PM', 'Okay, Maya, “Pay electricity bill” has been snoozed 3 times. Let’s finish it, or give it a time you’ll really keep.', ['Mark done', 'Pick a new time']],
   ['curious', '3:20 PM', 'Arun’s vendor list has been pending for 3 days. Shall I remind you to follow up at 2 PM tomorrow?', ['Remind me']],
-  ['proud', '5:40 PM', '5 of 5 tasks closed. Your Close ring is complete. That’s a strong day.', ['See progress']],
+  ['laugh', '5:40 PM', 'Both your Focus and Close rings are done! That’s a seriously good day.', ['See progress']],
   ['sleepy', '6:35 PM', 'It’s getting late. A two-minute shutdown recap clears your head for tomorrow.', ['Start recap']]
 ];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -284,7 +307,6 @@ setInterval(() => {
   if (ch < L[2].length) { ch = Math.min(L[2].length, ch + 2); say.innerHTML = L[2].slice(0, ch) + '<span class="c"></span>'; if (ch >= L[2].length) { say.textContent = L[2]; acts.innerHTML = L[3].map((a) => '<span>' + a + '</span>').join(''); } return; }
   hold += 40; if (hold > 4200) { li = (li + 1) % LINES.length; show(); }
 }, 40);
-const stage = document.getElementById('stage');
 addEventListener('pointermove', (e) => { if (reduce) return; const r = look.getBoundingClientRect(); const dx = (e.clientX - (r.left + r.width / 2)) / innerWidth, dy = (e.clientY - (r.top + r.height / 2)) / innerHeight; look.style.transform = 'translate(' + Math.max(-14, Math.min(14, dx * 40)) + 'px,' + Math.max(-10, Math.min(10, dy * 30)) + 'px)'; });
 addEventListener('resize', () => expr(LINES[li][0]));
 </script>
