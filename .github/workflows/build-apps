@@ -1,0 +1,167 @@
+name: Build NudgeNudge apps
+
+# Actions → "Build NudgeNudge apps" → Run workflow → type a version (e.g. 1.0.0)
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (higher than the last one, e.g. 1.0.1)'
+        required: true
+        default: '1.0.0'
+
+permissions:
+  contents: write
+
+env:
+  APP_VERSION: ${{ github.event.inputs.version }}
+  NODE_VERSION: '20'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}' }
+      - name: Build Windows (installer x64 + ARM, portable x64)
+        working-directory: native/desktop
+        shell: bash
+        run: |
+          npm install --no-audit --no-fund
+          npm version "$APP_VERSION" --no-git-tag-version --allow-same-version
+          node ../shared/prepare-www.mjs www
+          npx electron-builder --win --publish never
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            native/desktop/dist/NudgeNudge-Setup-x64.exe
+            native/desktop/dist/NudgeNudge-Setup-arm64.exe
+            native/desktop/dist/NudgeNudge-Portable.exe
+
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}' }
+      - name: Build Mac (Intel + Apple Silicon)
+        working-directory: native/desktop
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: |
+          npm install --no-audit --no-fund
+          npm version "$APP_VERSION" --no-git-tag-version --allow-same-version
+          node ../shared/prepare-www.mjs www
+          npx electron-builder --mac dir --universal --publish never
+          # free "ad-hoc" signature so Apple Silicon Macs don't call it damaged
+          codesign --force --deep --sign - "dist/mac-universal/Nudge Nudge.app"
+          npx electron-builder --mac dmg --universal --prepackaged "dist/mac-universal/Nudge Nudge.app" --publish never
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac
+          path: native/desktop/dist/NudgeNudge-Mac.dmg
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}' }
+      - name: Build Linux (AppImage + .deb)
+        working-directory: native/desktop
+        run: |
+          npm install --no-audit --no-fund
+          npm version "$APP_VERSION" --no-git-tag-version --allow-same-version
+          node ../shared/prepare-www.mjs www
+          npx electron-builder --linux AppImage deb --x64 --publish never
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            native/desktop/dist/NudgeNudge-Linux.AppImage
+            native/desktop/dist/NudgeNudge-Linux.deb
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}' }
+      - uses: actions/setup-java@v4
+        with: { distribution: 'temurin', java-version: '21' }
+      # GitHub's Linux computer already has the Android SDK installed;
+      # just accept its licences.
+      - name: Android SDK
+        run: |
+          echo "Android SDK at $ANDROID_HOME"
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+      - name: Create the Android project
+        working-directory: native/mobile
+        run: |
+          rm -rf android www
+          npm install --no-audit --no-fund
+          node ../shared/prepare-www.mjs www
+          npx cap add android
+          npx capacitor-assets generate --android --iconBackgroundColor '#101216' --iconBackgroundColorDark '#101216' --splashBackgroundColor '#101216' --splashBackgroundColorDark '#101216'
+          node android-extras.mjs "$APP_VERSION"
+          npx cap sync android
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        working-directory: native/mobile/android
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | base64 -d > app/nudgenudge.keystore; echo "Signing key found"; fi
+      - name: Build the APK
+        working-directory: native/mobile/android
+        env:
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          if [ -f app/nudgenudge.keystore ]; then
+            ./gradlew assembleRelease --no-daemon \
+              -Pandroid.injected.signing.store.file="$PWD/app/nudgenudge.keystore" \
+              -Pandroid.injected.signing.store.password="$KS_PASS" \
+              -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+              -Pandroid.injected.signing.key.password="$KEY_PASS"
+            cp app/build/outputs/apk/release/app-release.apk ../NudgeNudge-Android.apk
+          else
+            echo "::warning::No signing key secrets found, so this is a debug APK. It installs fine, but add the secrets so future updates install over it."
+            ./gradlew assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk ../NudgeNudge-Android.apk
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: native/mobile/NudgeNudge-Android.apk
+
+  release:
+    needs: [windows, mac, linux, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: out, merge-multiple: true }
+      - run: ls -la out
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          name: Nudge Nudge ${{ env.APP_VERSION }}
+          make_latest: true
+          body: |
+            **Nudge Nudge ${{ env.APP_VERSION }}**: reminders that don't give up, alarms that talk, and a companion that keeps you on track. Built by H24 Creationz.
+
+            | Device | Download |
+            |---|---|
+            | Windows (Intel & AMD) | `NudgeNudge-Setup-x64.exe`, or `NudgeNudge-Portable.exe` with no install |
+            | Windows on ARM | `NudgeNudge-Setup-arm64.exe` |
+            | Mac (Intel & Apple Silicon) | `NudgeNudge-Mac.dmg` |
+            | Linux | `NudgeNudge-Linux.AppImage` or `NudgeNudge-Linux.deb` |
+            | Android | `NudgeNudge-Android.apk` |
+
+            Easiest: open the download page. It picks the right file for your device.
+          files: out/*
