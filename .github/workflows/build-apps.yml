@@ -30,11 +30,14 @@ jobs:
           npm install --no-audit --no-fund
           npm version "$APP_VERSION" --no-git-tag-version --allow-same-version
           node ../shared/prepare-www.mjs www
-          npx electron-builder --win --publish never
+          # two separate builds: one installer per chip type (a single build would merge them into one file)
+          npx electron-builder --win nsis portable --x64 --publish never
+          npx electron-builder --win nsis --arm64 --publish never
           ls -la dist
       - uses: actions/upload-artifact@v4
         with:
           name: windows
+          if-no-files-found: error
           path: |
             native/desktop/dist/NudgeNudge-Setup-x64.exe
             native/desktop/dist/NudgeNudge-Setup-arm64.exe
@@ -62,6 +65,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: mac
+          if-no-files-found: error
           path: native/desktop/dist/NudgeNudge-Mac.dmg
 
   linux:
@@ -81,6 +85,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux
+          if-no-files-found: error
           path: |
             native/desktop/dist/NudgeNudge-Linux.AppImage
             native/desktop/dist/NudgeNudge-Linux.deb
@@ -138,6 +143,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: android
+          if-no-files-found: error
           path: native/mobile/NudgeNudge-Android.apk
 
   release:
